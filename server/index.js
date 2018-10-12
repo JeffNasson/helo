@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 //initialize express
 const app=express();
 app.use(bodyParser.json());
+app.use(express.static(`${__dirname}/../build`));
 
 //destructure values from .env so we can call them by their original file names
 const{SERVER_PORT,REACT_APP_DOMAIN,REACT_APP_CLIENT_ID,CLIENT_SECRET,CONNECTION_STRING,SECRET} = process.env
@@ -67,8 +68,9 @@ let authBypass = async(req,res,next)=>{
 // })
 
 app.get('/api/users',ctrl.getUsers);
+app.get('/api/posts',ctrl.getPosts);
 app.post('/api/users',ctrl.post);
-app.post('/api/users/:id',ctrl.getUser);
+app.post('/api/login',ctrl.getUser);
 
 
 

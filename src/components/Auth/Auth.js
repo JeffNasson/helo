@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {getUser} from '../../dux/reducer.js'
 
-export default class Auth extends Component{
+class Auth extends Component{
     constructor(){
         super();
         this.state={
@@ -15,10 +17,7 @@ export default class Auth extends Component{
         const{username,password} = this.state
         axios.post('/api/users',{username,password})
              .then(res=>{
-                 this.setState=({
-                     username:res.data.username,
-                     password:res.data.password
-                 })
+                 this.props.getUser(res.data)
                  
              })
             //  window.location=`localhost:3000/#/dashboard`
@@ -29,10 +28,7 @@ export default class Auth extends Component{
         
         axios.post(`/api/users/${id}`,{username,password})
              .then(res=>{
-                 this.setState({
-                     username:res.data.username,
-                     password:res.data.password
-                 })
+                 this.props.getUser(res.data)
              })
     }
 
@@ -48,3 +44,5 @@ export default class Auth extends Component{
         )
     }
 }
+
+export default connect(null,{getUser})(Auth);

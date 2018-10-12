@@ -1,3 +1,3 @@
 SELECT *
 FROM users
-WHERE id = $1
+WHERE username = $1 and password = $2

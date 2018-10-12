@@ -25,17 +25,25 @@ module.exports={
             
 
     },
-    getUser:async(req,res,next)=>{
-        const {id} = req.params;
-        const {username,password} = req.body
-        const db=req.app.get('db')
-
-        let foundUser = await db.find_user([id])
-            if(foundUser[0]){
-                req.session.user = foundUser[0];
-            } else {
-                let newUser = await db.add_user([username,password])
-                req.session.user = newUser[0]
-            }
+    getUser:(req,res,next)=>{
+        const db = req.app.get('db');
+        const { username, password } = req.body;
+    
+        db.login_user([username, password])
+          .then(res => {
+            res.status(200).send(res);
+          })
+          .catch(err => console.log(err));
+            
     },
+
+    getPosts:(req,res,next)=>{
+        const db=req.app.get('db');
+        const {author_id,content} = req.body
+        
+        db.get_posts([author_id,content])
+            .then(posts=>res.status(200).send(posts))
+            .catch(err=>console.log(err))
+
+    }
 }
